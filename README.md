@@ -3,8 +3,11 @@
 # Coral TPU Driver Install on Proxmox (Kernel 6.14+)
 
 ## 📖 Summary
-This guide explains how to install and patch the **Google Coral TPU drivers** (`gasket` and `apex`) on **Proxmox systems running modern kernels (6.14+)**.  
-The stock driver package fails to build due to kernel API changes. This README provides a **step‑by‑step, reproducible workflow** to build, patch, and load the drivers so that `/dev/apex_0` is available for TPU workloads.
+This guide explains how to install and patch the **Google Coral TPU drivers**
+(`gasket` and `apex`) on **Proxmox systems running modern kernels (6.14+)**.  
+The stock driver package fails to build due to kernel API changes.
+This README provides a **step‑by‑step, reproducible workflow** to build, patch,
+and load the drivers so that `/dev/apex_0` is available for TPU workloads.
 
 ---
 
@@ -132,5 +135,3 @@ Clone → Build package → Patch two files → `dkms build/install` → `modpro
 ```
 
 ---
-
-This README is copy‑ready for your repo. Would you like me to also add a **Troubleshooting section** (e.g. common errors like `no_llseek` or DKMS building against wrong kernels) so future installs are even smoother?
