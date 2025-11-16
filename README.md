@@ -1,6 +1,3 @@
-Here’s a clean **README.md** you can drop straight into your GitHub repo. It starts with a summary of what the guide is for, then walks through every command step‑by‑step.
-
----
 
 ```markdown
 # Coral TPU Driver Install on Proxmox (Kernel 6.14+)
