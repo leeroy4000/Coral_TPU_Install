@@ -3,23 +3,22 @@
 # Coral TPU Driver Install on Proxmox (Kernel 6.14+)
 
 ## 📖 Summary
-This guide explains how to install and patch the **Google Coral TPU drivers** (`gasket` and `apex`)
-on **Proxmox systems running modern kernels (6.14+)**.  
-The stock driver package fails to build due to kernel API changes.
-This README provides a **step‑by‑step, reproducible workflow** to build, patch,
-and load the drivers so that `/dev/apex_0` is available for TPU workloads.
+This guide explains how to install and patch the **Google Coral TPU drivers** (`gasket` and `apex`) on **Proxmox systems running modern kernels (6.14+)**.  
+The stock driver package fails to build due to kernel API changes. This README provides a **step‑by‑step, reproducible workflow** to build, patch, and load the drivers so that `/dev/apex_0` is available for TPU workloads.
 
 ---
 
 ## 🛠️ 1. Prep Environment
+Install required build tools, DKMS, and headers:
 ```bash
 sudo apt update
-sudo apt install -y git devscripts dh-dkms build-essential linux-headers-$(uname -r)
+sudo apt install -y git devscripts dh-dkms dkms build-essential linux-headers-$(uname -r)
 ```
 
 ---
 
 ## 📦 2. Get the Driver Source
+Clone the driver repo and build the DKMS package:
 ```bash
 cd ~
 git clone https://github.com/google/gasket-driver.git
@@ -32,6 +31,7 @@ sudo dpkg -i gasket-dkms_1.0-18_all.deb
 ---
 
 ## 🩹 3. Patch for Modern Kernels
+The driver needs two small fixes.
 
 ### Edit `gasket_page_table.c`
 ```bash
@@ -88,15 +88,19 @@ sudo modprobe apex
 ---
 
 ## ✅ 6. Verify
+Check that the modules are loaded and the TPU device node exists:
 ```bash
 lsmod | grep gasket
 lsmod | grep apex
 ls /dev/apex_0
 ```
 
+You should see both modules listed and `/dev/apex_0` present.
+
 ---
 
 ## 🧪 7. (Optional) Test TPU
+Install the EdgeTPU runtime and run a demo inference:
 ```bash
 python3 -m pip install --upgrade pip edgetpu
 wget https://storage.googleapis.com/edgetpu-public/models/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite
@@ -133,7 +137,7 @@ chmod +x install-coral-tpu.sh
 ```
 
 The script will:
-- Install prerequisites  
+- Install prerequisites (including `dkms`)  
 - Clone and build the driver package  
 - Apply the required patches automatically  
 - Rebuild and install via DKMS  
