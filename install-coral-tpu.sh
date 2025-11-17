@@ -6,7 +6,7 @@ set -e
 
 echo "=== Step 1: Install prerequisites ==="
 sudo apt update
-sudo apt install -y git devscripts dh-dkms build-essential linux-headers-$(uname -r)
+sudo apt install -y git devscripts dh-dkms dkms build-essential linux-headers-$(uname -r)
 
 echo "=== Step 2: Clone and build gasket driver ==="
 cd ~
